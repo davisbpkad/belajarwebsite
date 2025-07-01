@@ -384,3 +384,5 @@ for (const item of buah1) {
     console.log("Buah: " + item);
 }
 console.log("------------------");
+
+
