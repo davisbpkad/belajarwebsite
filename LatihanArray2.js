@@ -60,8 +60,8 @@ function modifySentence(sentence) {
     });
     return modifiedWords.join(' ');
 }
-
-console.log(modifySentence("I love programming in JavaScript"));
+console.log("Before Modify: I love programming in JavaScript");
+console.log("After Modify: " + modifySentence("I love programming in JavaScript"));
 
 //soal 4 countEmployeesByAgeRange(pegawai)
 //input : const pegawai = [

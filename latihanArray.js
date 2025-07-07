@@ -111,4 +111,24 @@ const nasabahLolos = daftarNasabahLolos(daftarnasabah);
 console.log(nasabahLolos);
 
 
+//object destructuring
+const person = {
+    name: "John",
+    age: 30,
+    city: "New York"
+};
+
+const { name, age, city } = person;
+console.log(name, age, city); // John 30 New York
+// Menggunakan object destructuring dalam fungsi
+function greet({ name, age }) { 
+    console.log(`Hello, my name is ${name} and I am ${age} years old.`);
+}   
+
+greet(person); // Hello, my name is John and I am 30 years old.
+
+
+//destructuring function daftarnasabahlolos
+// Menggunakan destructuring untuk mengambil kelas kredit dari nasabahLolos
+// Ini akan mengelompokkan nasabah berdasarkan kelas kredit mereka
 
