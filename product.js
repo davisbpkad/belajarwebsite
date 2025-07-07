@@ -12,11 +12,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const previewName = document.querySelector('#previewProductName');
     const previewPrice = document.querySelector('#previewProductPrice');
     const previewStatus = document.querySelector('#previewProductStatus');
+    const previewApiTitle = document.querySelector('#previewApiTitle');
+    const previewApiDescription = document.querySelector('#previewApiDescription');
     const form = document.querySelector('#productForm');
     const formTitle = document.querySelector('#formTitle');
     const list = document.querySelector('#productList');
     const loadingIndicator = document.querySelector('#loadingIndicator');
     const cancelBtn = document.querySelector('#cancelBtn');
+
+    // Store current editing product's API data
+    let currentApiData = null;
 
     // Helper Functions
     const rupiah = n => new Intl.NumberFormat('id-ID', { 
@@ -54,6 +59,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }`;
         if (previewStock) {
             previewStock.textContent = `Stock: ${stockInput.value || "0"}`;
+        }
+        
+        // Update API preview
+        if (currentApiData) {
+            if (previewApiTitle) previewApiTitle.textContent = currentApiData.title;
+            if (previewApiDescription) previewApiDescription.textContent = currentApiData.body;
+        } else {
+            if (previewApiTitle) previewApiTitle.textContent = "Will be fetched on save...";
+            if (previewApiDescription) previewApiDescription.textContent = "Additional information will be loaded from API when product is saved.";
         }
     }
 
@@ -140,6 +154,10 @@ document.addEventListener("DOMContentLoaded", function() {
             statusInput.value = p.status;
             stockInput.value = p.stock ?? 0;
             formTitle.textContent = 'Edit Product';
+            
+            // Preserve API data when editing
+            currentApiData = p.apiData || null;
+            
             updatePreview();
             window.scrollTo(0, 0);
         }
@@ -159,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function() {
         form.reset();
         editingId = null;
         formTitle.textContent = 'Add New Product';
+        currentApiData = null; // Reset API data
         updatePreview();
         if (stockInput) stockInput.value = '';
     }
@@ -189,6 +208,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Get random post from API data
                         const randomPost = apiData[Math.floor(Math.random() * apiData.length)];
                         product.apiData = randomPost;
+                        currentApiData = randomPost;
                         
                         showLoading(false);
                         
@@ -202,6 +222,10 @@ document.addEventListener("DOMContentLoaded", function() {
                         alert('Product added successfully, but failed to fetch additional information from API.');
                     }
                 } else {
+                    // When editing, preserve existing API data
+                    if (currentApiData) {
+                        product.apiData = currentApiData;
+                    }
                     alert('Product updated successfully!');
                 }
                 
